@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商標申請懶人包｜國宸國際商標事務所</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-light: #243258;
+    --gold: #c9a84c;
+    --gold-light: #e8c96d;
+    --cream: #fdf8f0;
+    --text-dark: #1a1a2e;
+    --text-mid: #3d3d5c;
+    --text-light: #6b6b8a;
+    --white: #ffffff;
+    --sidebar-width: 260px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #0f1729;
+    color: var(--text-dark);
+    display: flex;
+  }
+
+  /* ── 進度條 ── */
+  #progress-bar {
+    position: fixed; top: 0; left: var(--sidebar-width); right: 0;
+    height: 3px; background: var(--gold);
+    transform-origin: left; transform: scaleX(0);
+    z-index: 999; transition: transform 0.1s;
+  }
+
+  /* ══════════════════════════════
+     左側目錄
+  ══════════════════════════════ */
+  #sidebar {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background: var(--navy);
+    position: fixed; top: 0; left: 0; bottom: 0;
+    display: flex; flex-direction: column;
+    border-right: 3px solid var(--gold);
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    padding: 32px 24px 20px;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+  }
+  .sidebar-logo .book-icon {
+    font-size: 2rem; margin-bottom: 8px;
+  }
+  .sidebar-logo h2 {
+    font-family: 'Noto Serif TC', serif;
+    color: var(--gold);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    font-weight: 700;
+  }
+  .sidebar-logo p {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.7rem;
+    margin-top: 4px;
+  }
+
+  .sidebar-nav { padding: 16px 0; flex: 1; }
+  .sidebar-nav .nav-label {
+    color: rgba(201,168,76,0.6);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    padding: 8px 24px 4px;
+    text-transform: uppercase;
+  }
+  .sidebar-nav a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 24px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    position: relative;
+  }
+  .sidebar-nav a:hover,
+  .sidebar-nav a.active {
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.08);
+    border-left-color: var(--gold);
+  }
+  .sidebar-nav a .ch-num {
+    background: rgba(201,168,76,0.2);
+    color: var(--gold);
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 700;
+    min-width: 28px;
+    text-align: center;
+  }
+  .sidebar-nav a.active .ch-num {
+    background: var(--gold);
+    color: var(--navy);
+  }
+
+  .sidebar-cta {
+    padding: 20px;
+    border-top: 1px solid rgba(201,168,76,0.3);
+  }
+  .sidebar-cta a {
+    display: block;
+    background: var(--gold);
+    color: var(--navy);
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .sidebar-cta a:hover { background: var(--gold-light); }
+
+  /* ══════════════════════════════
+     主內容區
+  ══════════════════════════════ */
+  #main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    background: #e8e0d4;
+    min-height: 100vh;
+  }
+
+  /* ── 書本容器 ── */
+  .book-wrapper {
+    max-width: 780px;
+    margin: 40px auto;
+    padding: 0 24px 60px;
+  }
+
+  /* ── 每一頁 ── */
+  .page {
+    background: var(--white);
+    border-radius: 2px;
+    margin-bottom: 48px;
+    box-shadow:
+      -6px 0 12px rgba(0,0,0,0.15),
+      6px 6px 24px rgba(0,0,0,0.25),
+      0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .page::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: linear-gradient(180deg, var(--gold) 0%, var(--navy) 100%);
+  }
+
+  /* 頁碼 */
+  .page-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 40px;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+  }
+  .page-footer .pf-brand {
+    color: var(--text-light); font-size: 0.72rem;
+  }
+  .page-footer .pf-num {
+    color: var(--gold); font-weight: 700; font-size: 0.8rem;
+  }
+
+  /* ══════════════════════════════
+     封面頁
+  ══════════════════════════════ */
+  .cover-page {
+    background: linear-gradient(145deg, var(--navy) 0%, #0f1f45 60%, #1a3060 100%);
+    min-height: 500px;
+    padding: 60px 50px 40px;
+    color: white;
+  }
+  .cover-page::before { background: linear-gradient(180deg, var(--gold) 0%, var(--gold-light) 100%); width: 8px; }
+
+  .cover-badge {
+    display: inline-block;
+    border: 1px solid rgba(201,168,76,0.6);
+    color: var(--gold);
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    padding: 5px 16px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+  }
+  .cover-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 12px;
+    color: white;
+  }
+  .cover-title span { color: var(--gold); }
+  .cover-subtitle {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+  .cover-divider {
+    width: 60px; height: 3px;
+    background: var(--gold);
+    margin: 32px 0;
+  }
+  .cover-meta {
+    display: flex; gap: 32px; flex-wrap: wrap;
+  }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-item .num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 2rem; font-weight: 900;
+    color: var(--gold);
+  }
+  .cover-meta-item .label {
+    font-size: 0.72rem; color: rgba(255,255,255,0.6);
+    margin-top: 2px;
+  }
+  .cover-stamp {
+    position: absolute; right: 50px; bottom: 50px;
+    width: 90px; height: 90px;
+    border: 3px solid rgba(201,168,76,0.5);
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: rgba(201,168,76,0.7);
+    font-size: 0.6rem;
+    text-align: center;
+    line-height: 1.5;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* ══════════════════════════════
+     目錄頁
+  ══════════════════════════════ */
+  .toc-page { padding: 50px 50px 30px; }
+  .toc-header {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .toc-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .toc-item {
+    display: flex; align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px dashed #ddd;
+    gap: 16px;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: all 0.2s;
+  }
+  .toc-item:hover { color: var(--gold); padding-left: 8px; }
+  .toc-item .toc-ch {
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 3px;
+    min-width: 44px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .toc-item .toc-name {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .toc-item .toc-dots {
+    flex: 1; border-bottom: 1px dotted #ccc; margin: 0 8px;
+  }
+
+  /* ══════════════════════════════
+     章節通用
+  ══════════════════════════════ */
+  .chapter-page { padding: 50px 50px 30px; }
+  .ch-eyebrow {
+    font-size: 0.7rem; letter-spacing: 3px;
+    color: var(--gold); margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .ch-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.7rem; font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .ch-desc {
+    color: var(--text-light);
+    font-size: 0.88rem;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #eee;
+    line-height: 1.8;
+  }
+
+  /* 引言框 */
+  .quote-box {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: white;
+    padding: 28px 32px;
+    border-radius: 8px;
+    margin: 24px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-box::before {
+    content: '"';
+    position: absolute; top: -10px; left: 16px;
+    font-size: 6rem; color: rgba(201,168,76,0.15);
+    font-family: serif; line-height: 1;
+  }
+  .quote-box p {
+    font-size: 1.05rem; line-height: 1.9;
+    position: relative; z-index: 1;
+  }
+  .quote-box strong { color: var(--gold-light); }
+
+  /* 卡片 */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .card {
+    background: var(--cream);
+    border: 1px solid #e8dcc8;
+    border-radius: 8px;
+    padding: 20px;
+    border-top: 3px solid var(--gold);
+  }
+  .card .card-icon { font-size: 1.6rem; margin-bottom: 10px; }
+  .card h4 { font-size: 0.95rem; color: var(--navy); margin-bottom: 8px; font-weight: 700; }
+  .card p { font-size: 0.82rem; color: var(--text-mid); line-height: 1.7; }
+
+  /* 警示框 */
+  .alert-box {
+    background: #fff8e6;
+    border: 1px solid #f0d080;
+    border-left: 4px solid var(--gold);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.85rem;
+    color: #7a5c00;
+    line-height: 1.8;
+  }
+  .alert-box strong { color: #5a3e00; }
+
+  /* 誤解列表 */
+  .myth-list { margin: 20px 0; }
+  .myth-item {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    display: flex; gap: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .myth-item .myth-icon {
+    font-size: 1.8rem; flex-shrink: 0;
+    width: 44px; text-align: center;
+  }
+  .myth-item .myth-x {
+    background: #fee2e2; color: #dc2626;
+    font-weight: 900; font-size: 1rem;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .myth-item .myth-content h4 {
+    color: #dc2626; font-size: 0.9rem;
+    margin-bottom: 6px; font-weight: 700;
+  }
+  .myth-item .myth-content p {
+    font-size: 0.82rem; color: var(--text-mid); line-height: 1.7;
+  }
+  .myth-item .myth-correct {
+    background: #f0fdf4;
+    border-left: 3px solid #22c55e;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #166534;
+  }
+
+  /* 流程時間軸 */
+  .timeline { margin: 24px 0; position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 28px; top: 0; bottom: 0;
+    width: 2px; background: linear-gradient(180deg, var(--gold) 0%, var(--navy) 100%);
+  }
+  .tl-item {
+    display: flex; gap: 20px;
+    margin-bottom: 24px; position: relative;
+  }
+  .tl-dot {
+    width: 56px; height: 56px;
+    background: var(--navy);
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-weight: 900; font-size: 1rem;
+    flex-shrink: 0; z-index: 1;
+    box-shadow: 0 0 0 4px #e8e0d4;
+  }
+  .tl-content {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 16px 20px;
+    flex: 1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .tl-content h4 { color: var(--navy); font-size: 0.95rem; margin-bottom: 6px; font-weight: 700; }
+  .tl-content p { font-size: 0.82rem; color: var(--text-mid); line-height: 1.7; }
+  .tl-content .tl-tag {
+    display: inline-block;
+    background: var(--cream);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  /* FAQ */
+  .faq-item {
+    border: 1px solid #e8e0d0;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .faq-q {
+    padding: 16px 20px;
+    background: var(--cream);
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: 600; font-size: 0.9rem; color: var(--navy);
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .faq-q:hover { background: #f0e8d8; }
+  .faq-q .faq-arrow {
+    color: var(--gold); font-size: 1rem;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .faq-q.open .faq-arrow { transform: rotate(180deg); }
+  .faq-a {
+    display: none;
+    padding: 16px 20px;
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    line-height: 1.9;
+    border-top: 1px solid #e8e0d0;
+    background: white;
+  }
+  .faq-a.show { display: block; }
+
+  /* 比較表 */
+  .compare-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.82rem; }
+  .compare-table th {
+    background: var(--navy); color: var(--gold);
+    padding: 12px 16px; text-align: left; font-weight: 700;
+  }
+  .compare-table td { padding: 11px 16px; border-bottom: 1px solid #eee; }
+  .compare-table tr:nth-child(even) td { background: var(--cream); }
+  .compare-table .tag-yes { color: #16a34a; font-weight: 700; }
+  .compare-table .tag-no { color: #dc2626; font-weight: 700; }
+
+  /* CTA 頁 */
+  .cta-page {
+    background: linear-gradient(145deg, var(--navy) 0%, #0f1f45 100%);
+    padding: 60px 50px 40px;
+    color: white;
+    text-align: center;
+  }
+  .cta-page::before { background: linear-gradient(180deg, var(--gold) 0%, var(--gold-light) 100%); }
+  .cta-page h2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.8rem; font-weight: 900;
+    color: white; margin-bottom: 12px;
+  }
+  .cta-page h2 span { color: var(--gold); }
+  .cta-page p {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.92rem; line-height: 1.9;
+    max-width: 500px; margin: 0 auto 36px;
+  }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--gold);
+    color: var(--navy);
+    padding: 16px 40px;
+    border-radius: 8px;
+    font-weight: 700; font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+  }
+  .cta-btn:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(201,168,76,0.5);
+  }
+  .cta-features {
+    display: flex; justify-content: center; gap: 32px;
+    margin-top: 40px; flex-wrap: wrap;
+  }
+  .cta-feat {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.82rem; text-align: center;
+  }
+  .cta-feat .feat-icon { font-size: 1.6rem; margin-bottom: 6px; }
+
+  /* 兩欄 */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+  .highlight-box {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: white; border-radius: 10px; padding: 24px;
+    text-align: center;
+  }
+  .highlight-box .h-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 2.5rem; font-weight: 900; color: var(--gold);
+  }
+  .highlight-box .h-label { font-size: 0.82rem; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+  /* RWD */
+  @media (max-width: 768px) {
+    :root { --sidebar-width: 0px; }
+    #sidebar { display: none; }
+    #progress-bar { left: 0; }
+    .book-wrapper { padding: 0 12px 40px; margin: 16px auto; }
+    .cover-page, .chapter-page, .toc-page, .cta-page { padding: 36px 28px 24px; }
+    .card-grid, .two-col { grid-template-columns: 1fr; }
+    .cover-title { font-size: 1.8rem; }
+    .cover-stamp { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 進度條 -->
+<div id="progress-bar"></div>
+
+<!-- ══ 左側目錄 ══ -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="book-icon">📘</div>
+    <h2>商標申請<br>完整懶人包</h2>
+    <p>國宸國際商標事務所</p>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-label">目錄</div>
+    <a href="#cover" class="active"><span class="ch-num">封面</span> 關於本書</a>
+    <a href="#toc"><span class="ch-num">目錄</span> 章節總覽</a>
+    <a href="#ch1"><span class="ch-num">CH 1</span> 為何商標常被忽略</a>
+    <a href="#ch2"><span class="ch-num">CH 2</span> 兩大核心觀念</a>
+    <a href="#ch3"><span class="ch-num">CH 3</span> 三大常見誤解</a>
+    <a href="#ch4"><span class="ch-num">CH 4</span> 申請流程步驟</a>
+    <a href="#ch5"><span class="ch-num">CH 5</span> 常見問題 Q&amp;A</a>
+    <a href="#ch6"><span class="ch-num">CH 6</span> 立即免費諮詢</a>
+  </div>
+  <div class="sidebar-cta">
+    <a href="https://line.me/ti/p/umTOEprRU2" target="_blank">💬 LINE 免費諮詢</a>
+  </div>
+</nav>
+
+<!-- ══ 主內容 ══ -->
+<main id="main">
+<div class="book-wrapper">
+
+  <!-- ── 封面 ── -->
+  <section class="page" id="cover">
+    <div class="cover-page">
+      <div class="cover-badge">TRADEMARK GUIDE 2024</div>
+      <h1 class="cover-title">商標申請<br><span>完整懶人包</span></h1>
+      <p class="cover-subtitle">創業者必備的品牌保護指南<br>從零開始，一次搞懂商標申請的每個關鍵步驟</p>
+      <div class="cover-divider"></div>
+      <div class="cover-meta">
+        <div class="cover-meta-item">
+          <div class="num">6</div>
+          <div class="label">核心章節</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="num">3</div>
+          <div class="label">常見誤解破解</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="num">6</div>
+          <div class="label">申請流程步驟</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="num">6</div>
+          <div class="label">FAQ 解答</div>
+        </div>
+      </div>
+      <div class="cover-stamp">
+        國宸國際<br>商標事務所<br>專業出品
+      </div>
+    </div>
+    <div class="page-footer">
+      <span class="pf-brand">國宸國際商標事務所</span>
+      <span class="pf-num">— 1 —</span>
+    </div>
+  </section>
+
+  <!-- ── 目錄 ── -->
+  <section class="page" id="toc">
+    <div class="toc-page">
+      <div class="toc-header">TABLE OF CONTENTS</div>
+      <h2 class="toc-title">目　錄</h2>
+      <a class="toc-item" href="#ch1">
+        <span class="toc-ch">CH 01</span>
+        <span class="toc-name">為什麼商標常被排在最後？</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a class="toc-item" href="#ch2">
+        <span class="toc-ch">CH 02</span>
+        <span class="toc-name">兩大核心觀念：查詢與申請的順序</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a class="toc-item" href="#ch3">
+        <span class="toc-ch">CH 03</span>
+        <span class="toc-name">三大常見誤解，你中了幾個？</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a class="toc-item" href="#ch4">
+        <span class="toc-ch">CH 04</span>
+        <span class="toc-name">商標申請流程：Step by Step</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a class="toc-item" href="#ch5">
+        <span class="toc-ch">CH 05</span>
+        <span class="toc-name">常見問題 Q&amp;A</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a class="toc-item" href="#ch6">
+        <span class="toc-ch">CH 06</span>
+        <span class="toc-name">立即免費諮詢</span>
+        <span class="toc-dots"></span>
+      </a>
+    </div>
+    <div class="page-footer">
+      <span class="pf-brand">國宸國際商標事務所</span>
+      <span class="pf-num">— 2 —</span>
+    </div>
+  </section>
+
+  <!-- ── CH1 ── -->
+  <section class="page" id="ch1">
+    <div class="chapter-page">
+      <div class="ch-eyebrow">CHAPTER 01</div>
+      <h2 class="ch-title">為什麼商標<br>常被排在最後？</h2>
+      <p class="ch-desc">從產品開發、找廠商、做行銷，每天都在忙。唯獨「商標申請」這件事，一直被排在最後面。直到有一天，才驚覺品牌可能保不住。</p>
+
+      <div class="quote-box">
+        <p>辛苦打造的品牌，如果沒有商標權，<strong>其實隨時可能保不住。</strong><br>
+        當那一天真的發生，你已經沒有主動權了。</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🏷️</div>
+          <h4>品牌是資產</h4>
+          <p>商標是品牌最重要的無形資產，一旦被搶註，多年心血可能付之一炬。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚖️</div>
+          <h4>法律保護不等於商標</h4>
+          <p>公司登記、粉絲專頁、網域名稱，都無法取代商標權的法律保護效力。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌏</div>
+          <h4>搶先申請主義</h4>
+          <p>台灣商標採先申請主義，先使用不代表先擁有，時間就是保護。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💸</div>
+          <h4>事後補救成本高</h4>
+          <p>等到侵權糾紛發生，訴訟費用與品牌重建成本，遠高於提早申請的費用。</p>
+        </div>
+      </div>
+
+      <div class="alert-box">
+        ⚠️ <strong>重要提醒：</strong>很多創業者等到品牌做大、廣告投入大量預算後，才發現名稱與他人近似，面臨核駁或侵權風險。提早申請，才能放心大規模行銷。
+      </div>
+    </div>
+    <div class="page-footer">
+      <span class="pf-brand">國宸國際商標事務所</span>
+      <span class="pf-num">— 3 —</span>
+    </div>
+  </section>
+
+  <!-- ── CH2 ── -->
+  <section class="page" id="ch2">
+    <div class="chapter-page">
+      <div class="ch-eyebrow">CHAPTER 02</div>
+      <h2 class="ch-title">兩大核心觀念</h2>
+      <p class="ch-desc">掌握這兩個觀念，就能避開 80% 的商標風險，讓品牌走得更穩、更久。</p>
+
+      <div class="two-col">
+        <div class="highlight-box">
+          <div class="h-num">01</div>
+          <div class="h-label">先查詢，再命名</div>
+        </div>
+        <div class="highlight-box">
+          <div class="h-num">02</div>
+          <div class="h-label">先申請，再使用</div>
+        </div>
+      </div>
+
+      <div class="quote-box">
+        <p><strong>核心觀念一：先查詢，再命名</strong><br>
+        品牌名稱定案前，務必先進行專業商標檢索。確認名稱未被他人搶先申請，也不與現有商標近似，才能安心投入品牌建設。</p>
+      </div>
+
+      <div class="quote-box" style="margin-top:16px;">
+        <p><strong>核心觀念二：先申請，再大規模使用</strong><br>
+        商標採「先申請主義」，不是先使用就擁有權利。品牌定案後，應優先申請商標，再開始大規模行銷，避免廣告費白白浪費。</p>
+      </div>
+
+      <div class="alert-box">
+        💡 <strong>正確流程：</strong>品牌命名 → 專業商標檢索 → 申請商標 → 等待核准 → 放心大規模行銷
+      </div>
+    </div>
+    <div class="page-footer">
+      <span class="pf-brand">國宸國際商標事務所</span>
+      <span class="pf-num">— 4 —</span>
+    </div>
+  </section>
+
+  <!-- ── CH3 ── -->
+  <section class="page" id="ch3">
+    <div class="chapter-page">
+      <div class="ch-eyebrow">CHAPTER 03</div>
+      <h2 class="ch-title">三大常見誤解<br>你中了幾個？</h2>
+      <p class="ch-desc">這些誤解，讓許多創業者在不知不覺中將品牌暴露在風險之中。</p>
+
+      <div class="myth-list">
+        <div class="myth-item">
+          <div class="myth-x">✕</div>
+          <div class="myth-content">
+            <h4>誤解一：「先用用看，紅了再申請」</h4>
+            <p>很多人認為先把品牌做起來，等有知名度再申請商標。但這是非常危險的想法。</p>
+            <div class="myth-correct">✅ 正確觀念：商標採先申請主義，先用的人不一定贏。品牌越紅，越容易被他人搶先申請，屆時維權成本極高。</div>
+          </div>
+        </div>
+        <div class="myth-item">
+          <div class="myth-x">✕</div>
+          <div class="myth-content">
+            <h4>誤解二：「自己查過沒一樣的名稱就沒問題」</h4>
+            <p>自行在網路上搜尋，只能查到完全相同的名稱，無法判斷近似風險。</p>
+            <div class="myth-correct">✅ 正確觀念：商標審查包含讀音、字形、意義近似，需要專業資料庫與判斷經驗，才能有效評估核駁風險。</div>
+          </div>
+        </div>
+        <div class="myth-item">
+          <div class="myth-x">✕</div>
+          <div class="myth-content">
+            <h4>誤解三：「我沒要做國外市場，不需要國際商標」</h4>
+            <p>許多創業者認為只做台灣市場，不需要考慮國際申請。但品牌擴張往往比預期快。</p>
+            <div class="myth-correct">✅ 正確觀念：電商平台跨境銷售、海外代購都可能觸及國際市場。提早規劃馬德里國際商標，比事後補救省錢得多。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <span class="pf-brand">國宸國際商標事務所</span>
+      <span class="pf-num">— 5 —</span>
+    </div>
+  </section>
+
+  <!-- ── CH4 ── -->
+  <section class="page" id="ch4">
+    <div class="chapter-page">
+      <div class="ch-eyebrow">CHAPTER 04</div>
+      <h2 class="ch-title">申請流程<br>Step by Step</h2>
+      <p class="ch-desc">完整的商標申請流程，從品牌命名到核准取得，每個步驟都有專業事務所陪伴。</p>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot">1</div>
+          <div class="tl-content">
+            <div class="tl-tag">STEP 01</div>
+            <h4>品牌命名 / 設計 Logo</h4>
+            <p>確定品牌名稱、中英文字樣或圖形設計，這是商標申請的起點。</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">2</div>
+          <div class="tl-content">
+            <div class="tl-tag">STEP 02</div>
+            <h4>專業商標檢索</h4>
+            <p>委託事務所進行全面檢索，評估近似風險、核駁可能性，提供申請建議。</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">3</div>
+          <div class="tl-content">
+            <div class="tl-tag">STEP 03</div>
+            <h4>確認申請類別</h4>
+            <p>依據商品或服務性質，選擇正確的尼斯分類類別，避免保護範圍不足。</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">4</div>
+          <div class="tl-content">
+            <div class="tl-tag">STEP 04</div>
+            <h4>提出申請</h4>
+            <p>向智慧財產局提出申請，取得申請日（優先權日），正式進入審查程序。</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">5</div>
+          <div class="tl-content">
+            <div class="tl-tag">STEP 05</div>
+            <h4>審查期間（約 12-14 個月）</h4>
+            <p>智財局進行實體審查，若有核駁，事務所協助撰寫答辯理由書。</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">6</div>
+          <div class="tl-content">
+            <div class="tl-tag">STEP 06</div>
+            <h4>核准公告 → 取得商標權</h4>
+            <p>審查通過後進入公告期（3個月），無異議後正式取得商標權，有效期 10 年。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-footer">
+      <span class="pf-brand">國宸國際商標事務所</span>
+      <span class="pf-num">— 6 —</span>
+    </div>
+  </section>
+
+  <!-- ── CH5 ── -->
+  <section class="page" id="ch5">
+    <div class="chapter-page">
+      <div class="ch-eyebrow">CHAPTER 05</div>
+      <h2 class="ch-title">常見問題 Q&amp;A</h2>
+      <p class="ch-desc">整理最多創業者詢問的問題，點擊展開查看詳細解答。</p>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Q1｜個人品牌或微型創業也需要申請商標嗎？
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          是的！無論是個人品牌、微型創業、網路賣家，只要有商業使用的名稱、圖樣或 Logo，都建議及早申請保護。商標保護的是品牌，與公司規模無關。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Q2｜公司登記後，品牌名稱就受到保護了嗎？
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          不是。公司登記、社群帳號與商標權是完全不同的法律保護。公司登記只保護公司名稱不被同縣市重複登記，無法阻止他人在相同類別申請相同或近似的商標。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Q3｜申請一個商標大概要多少費用？
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          官方規費依類別計算，每類約新台幣 3,000 元。加上事務所代理費用，整體費用視申請類別數量而定。建議先諮詢，由專業人員評估最適合的申請策略。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Q4｜商標被核駁了怎麼辦？
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          收到核駁理由書後，申請人有機會提出答辯。專業事務所會分析核駁原因，撰寫有力的答辯理由書，爭取核准機會。這也是委託專業代理的重要優勢之一。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Q5｜什麼是馬德里國際商標申請？
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          馬德里制度是一套國際商標申請機制，只需提出一份申請，就可以同時指定多個國家或地區，大幅降低國際布局的成本與複雜度。適合有跨境銷售計畫的品牌。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Q6｜商標核准後，還需要做什麼？
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-a">
+          商標核准後，建議定期進行商標監控，防止他人申請近似商標。此外，商標有效期為 10 年，到期前需辦理延展，以維持保護效力。
+        </div>
+      </div>
+
+      <table class="compare-table" style="margin-top:28px;">
+        <thead>
+          <tr>
+            <th>保護方式</th>
+            <th>保護範圍</th>
+            <th>商標效力</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>公司登記</td>
+            <td>同縣市公司名稱</td>
+            <td class="tag-no">✕ 無法阻止他人申請商標</td>
+          </tr>
+          <tr>
+            <td>社群帳號</td>
+            <td>平台帳號名稱</td>
+            <td class="tag-no">✕ 無法阻止他人使用名稱</td>
+          </tr>
+          <tr>
+            <td>網域名稱</td>
+            <td>特定網址</td>
+            <td class="tag-no">✕ 無商標法律效力</td>
+          </tr>
+          <tr>
+            <td><strong>商標申請</strong></td>
+            <td><strong>全國同類別品牌保護</strong></td>
+            <td class="tag-yes">✓ 完整商標法律保護</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="page-footer">
+      <span class="pf-brand">國宸國際商標事務所</span>
+      <span class="pf-num">— 7 —</span>
+    </div>
+  </section>
+
+  <!-- ── CH6 CTA ── -->
+  <section class="page" id="ch6">
+    <div class="cta-page">
+      <div class="ch-eyebrow" style="color:rgba(201,168,76,0.8);letter-spacing:3px;font-size:0.7rem;margin-bottom:16px;">CHAPTER 06</div>
+      <h2>讓專業陪伴你的<br><span>品牌走得更遠</span></h2>
+      <p>提早申請商標，不代表你多疑，也不是反應過度。<br>
+      相反地，那是讓品牌能走得更久、更穩的一種智慧。<br>
+      一次免費諮詢，就能替一個品牌避開很大的風險。</p>
+
+      <a href="https://line.me/ti/p/umTOEprRU2" target="_blank" class="cta-btn">
+        💬 立即免費諮詢
+      </a>
+
+      <div class="cta-features">
+        <div class="cta-feat">
+          <div class="feat-icon">🔍</div>
+          免費商標檢索諮詢
+        </div>
+        <div class="cta-feat">
+          <div class="feat-icon">📋</div>
+          專業申請策略規劃
+        </div>
+        <div class="cta-feat">
+          <div class="feat-icon">🌏</div>
+          國際商標布局建議
+        </div>
+        <div class="cta-feat">
+          <div class="feat-icon">🛡️</div>
+          品牌保護健檢服務
+        </div>
+      </div>
+    </div>
+    <div class="page-footer" style="background:#0f1f45;border-top:1px solid rgba(201,168,76,0.2);">
+      <span class="pf-brand" style="color:rgba(255,255,255,0.4);">國宸國際商標事務所</span>
+      <span class="pf-num">— 8 —</span>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<script>
+  // 進度條
+  window.addEventListener('scroll', () => {
+    const el = document.getElementById('progress-bar');
+    const total = document.body.scrollHeight - window.innerHeight;
+    el.style.transform = `scaleX(${window.scrollY / total})`;
+  });
+
+  // 目錄高亮
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('#sidebar .sidebar-nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+
+  // FAQ
+  function toggleFaq(el) {
+    el.classList.toggle('open');
+    const ans = el.nextElementSibling;
+    ans.classList.toggle('show');
+  }
+</script>
+</body>
+</html>
